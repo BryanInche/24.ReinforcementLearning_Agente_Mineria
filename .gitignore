@@ -1,0 +1,16 @@
+# Archivos grandes (datasets, modelos, logs)
+*.csv
+*.json
+*.pkl
+*.log
+
+# Carpetas específicas
+logs/
+ticks_filtrados/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Notebooks checkpoints
+.ipynb_checkpoints/

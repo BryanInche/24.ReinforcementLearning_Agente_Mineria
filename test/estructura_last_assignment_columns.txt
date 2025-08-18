@@ -1,0 +1,2 @@
+None
+['Truck', 'Shovel', 'Slot', 'Status', 'Cost', 'Current', 'ETA_reasignacion', 'ETA_Current', 'Changed']

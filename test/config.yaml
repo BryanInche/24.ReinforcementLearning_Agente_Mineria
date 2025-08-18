@@ -1,0 +1,20 @@
+# Rutas de archivos y carpetas
+paths:
+  qtable_path: "C:/Simluador_Opt_GRUPAL/Simulador_Inteligente/MVP1/src_new/algorithms/RL_model/agent/q_table_real.pkl" # Ruta de la Q-table
+  tick_file: "C:/Simluador_Opt_GRUPAL/Simulador_Inteligente/MVP1/src_new/algorithms/RL_model/ticks_filtrados/tick_222.json" # Tick inicial para la simulación  
+  decision_log_path: "C:/Simluador_Opt_GRUPAL/Simulador_Inteligente/MVP1/src_new/algorithms/RL_model/logs/decisiones_guardadas/decisiones_pendientes.pkl" # Archivo para decisiones pendientes
+  log_dir: "C:/Simluador_Opt_GRUPAL/Simulador_Inteligente/MVP1/src_new/algorithms/RL_model/logs/logs_ticks" # Carpeta para guardar los logs
+
+# Configuración del agente RL
+agent:
+  shovel_names: # Lista de nombres de palas
+    - PH002
+    - EX004
+    - PH003
+    - PH001
+    - CF001
+    - CF002
+
+# Configuración de logging
+logging:
+  log_level: "INFO"  # Puede ser DEBUG, INFO, WARNING, ERROR, CRITICAL
