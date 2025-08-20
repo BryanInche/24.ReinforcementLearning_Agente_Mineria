@@ -13,9 +13,9 @@ import pandas as pd
 # 1. CONFIGURACIÓN DE PARAMETROS PARA EL ENTRENAMIENTO
 # =======================================================
 MODO = "real"  # "real" o "artificial"
-NUM_EPISODIOS = 10
+NUM_EPISODIOS = 2
 SHOVEL_NAMES = ['PH002', 'EX004', 'PH003', 'PH001', 'CF001', 'CF002']
-TICK_JSON_REAL_PATH = r"C:\Simluador_Opt_GRUPAL\Simulador_Inteligente\MVP1\src_new\algorithms\RL_model\agent\MINE-hudbay-TicksTrainRL-TIME-2025-08-01.json"
+TICK_JSON_REAL_PATH = r"C:\RL_model\agent\MINE-hudbay-2025-08-19.json"
 LOG_CSV_PATH = f"log_entrenamiento_AgenteRl_{MODO}.csv"
 QTABLE_PATH = f"q_table_{MODO}.pkl"
 
@@ -83,11 +83,9 @@ for ep in range(NUM_EPISODIOS):
             state = states[0]  # usamos solo el camion actual
 
             # 2. Acciones válidas
-            #valid_actions = [s for s in shovel_names if shovels_info[s]["state"] == 1]  # Solo activas las palas que esta en estado "1"
             valid_actions = SHOVEL_NAMES    # ← Ahora todas las acciones están disponibles
 
             if not valid_actions:
-                #print("No hay palas activas en tick", paso)
                 print(f"No hay acciones válidas para el camión {truck_id} en tick {tick_index}")
                 continue
 
@@ -95,9 +93,7 @@ for ep in range(NUM_EPISODIOS):
             action = agent.choose_action(state, valid_actions)
 
             # 4. Obtener next_tick (mismo camión, siguiente tick)
-            #next_tick_index = str((paso + 1) % total_ticks)
             next_tick_index = (tick_index + 1) % total_ticks
-            #next_tick_data = tick_json[str(next_tick_index)]
             next_tick_data = tick_json[tick_keys[next_tick_index]]
 
             next_truck_info = next_tick_data["truck_states"].get(truck_id, truck_info)
@@ -136,7 +132,6 @@ for ep in range(NUM_EPISODIOS):
 
 
             # 6. Validación de acciones para próximo estado
-            #next_valid_actions = [s for s in shovel_names if shovels_info[s]["state"] == 1]
             next_valid_actions = valid_actions
 
             # 7. Actualizar agente
@@ -203,11 +198,6 @@ for estado, acciones in list(agent.q_table.items()):
 # ============================================
 # GUARDAR LOG DEL ENTRENAMIENTO
 # ============================================
-#Opcion1:
-#with open("log_entrenamiento_AgenteRL_detallado.json", "w") as f:
-#    json.dump(logs_entrenamiento, f, indent=2)
-#print("Log de entrenamiento guardado")
-
 #Opcion2:
 df_log = pd.DataFrame(logs_entrenamiento)
 df_log.to_csv(LOG_CSV_PATH, index=False)
@@ -225,14 +215,3 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig(f"recompensas_{MODO}.png")
 plt.show()
-
-"""
-Nota:
-3. Aprendizaje:
-El agente actualiza su política en función de la recompensa, con el objetivo de maximizar las recompensas 
-futuras.
-
-4. Iteración:
-Este proceso se repite, lo que permite al agente perfeccionar su política y aprender el comportamiento 
-óptimo a lo largo del tiempo. 
-"""

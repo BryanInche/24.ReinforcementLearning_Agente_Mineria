@@ -82,6 +82,7 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
     if ordered_shovel_names is None:
         ordered_shovel_names = sorted(shovel_dict.keys())
 
+    # Inicializa listas para almacenar estados y nombres de camiones
     states = []
     truck_names = []  # Para guardar los nombres reales de los camiones
 
@@ -130,11 +131,11 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
             discretizar_position(x, bin_size=500),  # Posicion X del camion
             discretizar_position(y, bin_size=500),  # Posicion Y del camion
             status_mapping.get(status, -1),  # Status del Camion
-            discretizar_fuel(fuel)   # Nivel de combustible del camion
+            discretizar_fuel(fuel),  # Nivel de combustible del camion
         ]
 
         #=================================================
-        # Parte 1.2: Variables del camión: info de ETA hacia palas ACTIVAS
+        # Parte 1.2: Variables del camión: info de ETA hacia palas ACTIVAS (Caso particular porque tiene ETAs en una lista dentro del JSON)
         #=================================================
         eta_dict = truck_info.get("ETA", {})
         eta_values = []
@@ -142,10 +143,10 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
 
         # eta_PH002, eta_EX004, ..., eta_CF002: ETA discretizada hacia cada pala (si está activa, si no, -1)
         for shovel_name in ordered_shovel_names:
-            shovel_info = shovel_dict.get(shovel_name, {})
+            shovel_info = shovel_dict.get(shovel_name, {}) # Obtener información de la pala
 
             #shovel_state = shovel_info.get("state", -1)
-            shovel_state = shovel_info.get("main_state", -1)
+            shovel_state = shovel_info.get("main_state", -1) # Cambiado a "main_state" para usar el estado principal de la pala
 
             if shovel_state == 1:  # Solo considerar palas activas
                 # ETA desde el camión a esta pala
@@ -154,7 +155,7 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
 
                 # shovel_spot_time y shovel_cycle desde shovel_states
                 shovel_spot_time = shovel_info.get("shovel_spot_time", 0) or 0
-                shovel_cycle = shovel_info.get("shovel_cycle", 0) or 0
+                shovel_cycle = shovel_info.get("shovel_cycle()", 0) or 0
 
                 # Nueva variable: ETA - (shovel_spot_time + shovel_cycle)
                 if eta_value is not None:
@@ -166,18 +167,9 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
                 eta_discreta = -1  # No incluir ETA si la pala no está activa
                 Variable_Tiempo_Nuevo = -1
             
-            # Agregar ETA y la nueva variable al estado
-            #state.append(eta_discreta)
-            #state.append(Variable_Tiempo_Nuevo)
-
+            # Agregar valores discretizados al estado
             eta_values.append(eta_discreta)
             tiempo_nuevo_values.append(Variable_Tiempo_Nuevo)
-
-            #if not state_labels or len(state_labels) < len(state):
-            #    state_labels.extend([
-            #        f"eta_{shovel_name}",
-            #        f"Valor_tiempo_Nuevo_{shovel_name}"
-            #    ])
 
         # Añadir todos los ETA juntos y luego todos los tiempos nuevos
         state.extend(eta_values)
@@ -188,19 +180,18 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
         #===============================
         # Agrega variables de palas en orden, agregadas al estado base
         #for attr in ["priority", "coverage", "main_state","state","queue_count"]:
-        for attr in ["state","queue_count", "priority", "coverage"]: 
+        for attr in ["main_state","queue_count", "priority", "coverage"]: 
             for shovel_name in ordered_shovel_names:
-                #shovel_info = shovel_dict.get(shovel_name, {})
-                #value = shovel_info.get(attr, -1)
                 value = shovel_dict.get(shovel_name, {}).get(attr, -1)
                 state.append(value)
-        # shovel_state_PH002, ..., shovel_state_CF002 : Estado de cada pala (0 = inactiva, 1 = activa, etc.)
-        # queue_PH002, ..., queue_CF002	Tamaño de cola de cada pala
+        
+        # Agregar el estado construido a la lista de estados
         states.append(tuple(state))
     
-    return states, truck_names, state_labels
+    #return states, truck_names, state_labels
+    return states, truck_names
 
-
+"""
 #########################################################################################################################################################################
 def validate_state_builder(json_path, tick_id):
     with open(json_path, "r") as f:
@@ -233,4 +224,4 @@ def validate_state_builder(json_path, tick_id):
 #TICK_JSON_REAL_PATH = r"C:\RL_model\agent\MINE-hudbay-ALGO-2025-08-15.json"
 TICK_JSON_REAL_PATH = r"C:\RL_model\agent\MINE-hudbay-2025-08-19.json"
 validate_state_builder(TICK_JSON_REAL_PATH, tick_id="3")
-
+"""

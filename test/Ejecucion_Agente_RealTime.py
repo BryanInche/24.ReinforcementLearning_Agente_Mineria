@@ -95,7 +95,10 @@ def get_decision_reason(state, action, q_table, exploracion, truck_etas=None, sh
     shovel_info = ""
     if shovels_info and action in shovels_info:
         sd = shovels_info[action]
-        state_pala = sd.get("state", "N/A")
+        
+        #state_pala = sd.get("state", "N/A")
+        state_pala = sd.get("main_state", "N/A")
+
         cola_pala = sd.get("queue_count", "N/A")
         if state_pala == 1:
             shovel_info = f" | Pala activa, cola: {cola_pala}"

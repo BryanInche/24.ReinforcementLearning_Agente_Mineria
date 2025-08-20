@@ -17,7 +17,7 @@ Donde:
 
 class QLearningAgent:
     #def __init__(self, actions, state_size, alpha=0.1, gamma=0.9,epsilon=1.0, epsilon_decay=0.1, epsilon_min=0.01):
-    def __init__(self, actions, alpha=0.1, gamma=0.9,epsilon=0.5, epsilon_decay=0.1, epsilon_min=0.01): # epsilon=1.0
+    def __init__(self, actions, alpha=0.1, gamma=0.9,epsilon=0.7, epsilon_decay=0.1, epsilon_min=0.01):
         # Lista de acciones que el agente puede elegir.
         self.actions = actions  # acciones posibles como nombres de palas, ej: ["PH001", "PH002"]
         
