@@ -85,9 +85,9 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
     states = []
     truck_names = []  # Para guardar los nombres reales de los camiones
 
-    # ===================================
-    # Construcción de etiquetas una sola vez
-    # ===================================
+    # ================================================
+    # Construcción de etiquetas de names una sola vez
+    # ================================================
     state_labels = [
         "pos_x_discr",
         "pos_y_discr",
@@ -143,7 +143,9 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
         # eta_PH002, eta_EX004, ..., eta_CF002: ETA discretizada hacia cada pala (si está activa, si no, -1)
         for shovel_name in ordered_shovel_names:
             shovel_info = shovel_dict.get(shovel_name, {})
-            shovel_state = shovel_info.get("state", -1)
+
+            #shovel_state = shovel_info.get("state", -1)
+            shovel_state = shovel_info.get("main_state", -1)
 
             if shovel_state == 1:  # Solo considerar palas activas
                 # ETA desde el camión a esta pala
@@ -198,9 +200,9 @@ def state_builder3(tick_info: dict, ordered_shovel_names=None) -> List[Tuple]:
     
     return states, truck_names, state_labels
 
-"""
+
 #########################################################################################################################################################################
-def validate_state_builder(json_path, tick_id="3"):
+def validate_state_builder(json_path, tick_id):
     with open(json_path, "r") as f:
         tick_json = json.load(f)
 
@@ -228,6 +230,7 @@ def validate_state_builder(json_path, tick_id="3"):
 
 # Ejecución
 #TICK_JSON_REAL_PATH = r"C:\Simluador_Opt_GRUPAL\Simulador_Inteligente\MVP1\src_new\algorithms\RL_model\agent\MINE-hudbay-ALGO-TIME_8_8_2025.json"
-TICK_JSON_REAL_PATH = r"C:\Simluador_Opt_GRUPAL\Simulador_Inteligente\MVP1\src_new\algorithms\RL_model\agent\MINE-hudbay-ALGO-2025-08-15.json"
+#TICK_JSON_REAL_PATH = r"C:\RL_model\agent\MINE-hudbay-ALGO-2025-08-15.json"
+TICK_JSON_REAL_PATH = r"C:\RL_model\agent\MINE-hudbay-2025-08-19.json"
 validate_state_builder(TICK_JSON_REAL_PATH, tick_id="3")
-"""
+
