@@ -124,6 +124,17 @@ Los logs almacenan:
 
 -- Número de estados únicos descubiertos
 
+## Nuevos Scripts para Programación Paralela y Tuning
+
+- training_agent_paralelo.py
+Script optimizado para el entrenamiento del agente de aprendizaje por refuerzo utilizando múltiples episodios de manera eficiente. Permite entrenar el agente 4-5 veces más rápido que la versión estándar, gracias a una mejor gestión de memoria, carga de datos única y checkpoints periódicos. Genera logs, gráficos y Q-tables, facilitando el análisis de resultados.
+
+- Tunnig_agent_train_base.py
+Contiene funciones base para el entrenamiento del agente con diferentes configuraciones de hiperparámetros (alpha, gamma, epsilon_decay). Permite realizar análisis de sensibilidad y tuning, devolviendo la recompensa promedio para cada configuración. Está optimizado para ser llamado desde procesos paralelos y facilita la comparación de resultados entre configuraciones.
+
+- Tunnig_hiperparmetros.py
+Script principal para el análisis y tuning de hiperparámetros en paralelo. Define los rangos de alpha, gamma y epsilon_decay a probar, construye todas las combinaciones y ejecuta múltiples experimentos en paralelo usando multiprocessing. Cada experimento entrena un agente con una configuración distinta y guarda los resultados en un archivo CSV para su posterior análisis.
+
 -- Tasa exploración/explotación
 
 -- Distribución de acciones
