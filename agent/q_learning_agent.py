@@ -181,6 +181,8 @@ class QLearningAgent:
     - Al inicio explore mucho.
     - A medida que aprende, explora menos y explota(tomar acciones que solo obtienen recompsensas altas) más.
     epsilon_decay no significa porcentaje de disminución, sino factor multiplicativo
+    epsilon_decay = 0.95 → reduces un 5% por episodio
+    epsilon_decay = 0.995 → reduces un 0.5% por episodio
     """
     def decay_epsilon(self):
         if self.epsilon > self.epsilon_min:
